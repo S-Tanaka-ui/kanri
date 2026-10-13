@@ -1,0 +1,13 @@
+body{
+    margin: 0;
+}
+header{
+    display: flex;
+    color: white;
+    background-color: rgb(33, 33, 33);
+}
+.homeBackButton{
+    color: white;
+    background: transparent;
+    border: 1px solid white;
+}

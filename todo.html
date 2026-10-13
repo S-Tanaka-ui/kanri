@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/todo.css">
+</head>
+<body>
+    <header>
+        <button class="homeBackButton">《</button>
+        <div class="title">
+            <img src="img/memo_mono.png" class="todoIllust">
+            <h3>ToDoList</h3>
+        </div>
+    </header>
+    
+    <main>
+        <section id="weekSlider">
+            <button id="prevButton">＜</button>
+            <h2 id="weekLabel">9月2週</h2>
+            <button id="nextButton">＞</button>
+        </section>
+
+        <section>
+            <table id="todoTable">
+                <tr id="dateRow"></tr>
+                <tr id="weekdayRow"></tr>
+                <tr id="taskRow"></tr>
+            </table>
+        </section>
+    </main>
+
+    <script src="js/todo.js"></script>
+</body>
+</html>

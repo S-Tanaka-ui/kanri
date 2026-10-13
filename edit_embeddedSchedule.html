@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/edit_embeddedSchedule.css">
+</head>
+<body>
+    <header>
+        <button class="homeBackButton">《</button>
+        <h2>HOMEヘ</h2>
+    </header>
+
+    <main>
+        <form>
+            <label>題名</label>
+            <input type="text" class="daimeiContent">
+            <hr>
+
+            <label>概要</label>
+            <input type="text" class="gaiyouContent">
+            <br>
+
+            <label>予定</label>
+            <div id="schedule-list">
+                <div class="schedule-item">
+                    <select class="day">
+                        <option>月</option>
+                        <option>火</option>
+                        <option>水</option>
+                        <option>木</option>
+                        <option>金</option>
+                        <option>土</option>
+                        <option>日</option>
+                    </select>曜
+                    <select class="time">
+                        <option>AM</option>
+                        <option>PM</option>
+                        <option>NT</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" id="add-schedule">+</button>
+            <br>
+
+            <label>メモ</label>
+            <textarea rows="4" cols="50" class="memoContent"></textarea>
+            <br>
+
+            <button type="button" id="tourokuButton">登録</button>
+        </form>
+    </main>
+
+    <script src="js/edit_embeddedSchedule.js"></script>
+</body>
+</html>

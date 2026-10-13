@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/calender.css">
+</head>
+<body>
+    <header>
+        <button class="homeBackButton">《</button>
+        <div class="title">
+            <img src="img/calender_mono.png" class="calenderIllust">
+            <h3>Calender</h3>
+        </div>
+    </header>
+    
+    <main>
+        <section id="weekSlider">
+            <button id="prevButton">＜</button>
+            <h2 id="weekLabel">9月2週</h2>
+            <button id="nextButton">＞</button>
+        </section>
+
+        <section>
+            <table id="calenderTable">
+                <tr id="dateRow"></tr>
+                <tr id="weekdayRow"></tr>
+                <tr id="amRow"></tr>
+                <tr id="pmRow"></tr>
+                <tr id="ntRow"></tr>
+            </table>
+        </section>
+    </main>
+
+    <script src="js/calender.js"></script>
+</body>
+</html>

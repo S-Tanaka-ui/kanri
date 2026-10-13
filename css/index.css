@@ -1,0 +1,42 @@
+body{
+    margin: 0;
+}
+header{
+    color: white;
+    background-color: rgb(33, 33, 33);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+header .kanriIllust{
+    width: 100px;
+    height: 80px;
+}
+header a{
+    color: white;
+    border: solid 1px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+
+
+
+main{
+    background-color: white;
+}
+section{
+    padding: 16px;
+}
+.embeddedContents,
+.personalContents{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.embeddedContents div,
+.personalContents div{
+    padding: 7px;
+    border: solid 1px;
+    border-radius: 3px;
+}
