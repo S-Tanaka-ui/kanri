@@ -1,10 +1,10 @@
-//生活要素(埋め込まれた)を追加する
+//生活要素(カレンダー側)を追加する
 const button = document.getElementById("embeddedScheduleButton");
 button.addEventListener("click", function(){
     window.location.href = "edit_embeddedSchedule.html"
 });
 
-//生活要素(プライベート)を追加する
+//生活要素(todo側)を追加する
 const button2 = document.getElementById("personalScheduleButton");
 button2.addEventListener("click", function(){
     window.location.href = "edit_personalSchedule.html"
