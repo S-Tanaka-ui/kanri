@@ -1,3 +1,4 @@
+//HOMEに戻るためのボタンの機能
 const button = document.querySelector(".homeBackButton");
 button.addEventListener("click", function(){
     window.location.href = "index.html"
