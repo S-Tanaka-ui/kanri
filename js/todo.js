@@ -7,36 +7,31 @@ button.addEventListener("click", function(){
 
 //カレンダースライドとtodoリストの内容表示
 
-//タスク一覧の配列を定義
+//localStorageのtasksを取ってくる
 const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-
 // 旧形式(文字列)のデータを { text, done } に変換
-Object.keys(tasks).forEach(k => {
+Object.keys(tasks).forEach(k => {//アロー関数(function(k){}と同じ)
     tasks[k] = tasks[k].map(t =>
-        typeof t === "string" ? { text: t, done: false } : t
+        typeof t === "string" ? { text: t, done: false } : t//条件?A(true):B(false)
     );
 });
-
-// 保存処理をまとめた関数
+// localStorageに保存
 function saveTasks(){
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-//月曜日を保持
-let monday = getMonday(new Date());
-
 //日付を渡すと、その日付の週の月曜日が返ってくる関数
+let monday = getMonday(new Date());
 function getMonday(d){
     d = new Date(d);//dを日付データとする
     d.setDate(d.getDate() - ((d.getDay() + 6) %7));//getDate→日付、getDay→曜日、月曜日の日付が求まる
     return d;
 }
-
 //日付を文字列として認識する関数
 function formatKey(d){
     return d.toISOString().slice(0,10);
 }
-
+//☆
 function render(){
     //その週の分の日付の配列を作る関数
     const days = [...Array(7)].map((_ , i) =>{//スプレッド構文・map(要素,インデックス)
@@ -77,17 +72,17 @@ function render(){
     });
 }
 
-//todoリストの追加に関する関数
+//todoリストの追加を入力してlocalStorageに保存する関数
 function addTask(key){
     const text = prompt("タスク内容を入力してください");
     if(!text) return;
-    (tasks[key] ??= []).push({ text: text, done: false });
+    (tasks[key] ??= []).push({ text: text, done: false });//tasks[key]に値が入っていなければ[]を代入
     localStorage.setItem("tasks", JSON.stringify(tasks));
     saveTasks();
     render();
 };
 
-// チェックのON/OFFを切り替える
+//☆チェックのON/OFFを切り替える
 function toggleTask(key, index){
     tasks[key][index].done = !tasks[key][index].done;
     saveTasks();
@@ -99,8 +94,11 @@ function slideWeek(n){
     monday.setDate(monday.getDate() + n * 7);
     render();
 }
-
 document.getElementById("prevButton").onclick = () => slideWeek(-1);
 document.getElementById("nextButton").onclick = () => slideWeek(1);
 
 render();
+
+
+
+//☆render以降の関数にrenderが連打しているのはなぜんだー？
