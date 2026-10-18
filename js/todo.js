@@ -31,7 +31,7 @@ function getMonday(d){
 function formatKey(d){
     return d.toISOString().slice(0,10);
 }
-//☆
+
 function render(){
     //その週の分の日付の配列を作る関数
     const days = [...Array(7)].map((_ , i) =>{//スプレッド構文・map(要素,インデックス)
@@ -41,7 +41,7 @@ function render(){
     });
 
     //〇月〇週の見出しの表示
-    document.getElementById("weekLabel").textContent = `${monday.getMonth() + 1}月${Math.ceil((monday.getDate() + 6) /7)}週`;
+    document.getElementById("weekLabel").textContent = `${monday.getMonth() + 1}月${Math.ceil((monday.getDate() + 6) /7)}週`;//ceilは切り上げ
 
     //todoリスト表の中身を(一旦空で)作り出す
     const dateRow = document.getElementById("dateRow");
@@ -54,7 +54,7 @@ function render(){
     days.forEach(d => {
         const key = formatKey(d);
         dateRow.innerHTML += `<th>${d.getDate()}</th>`;
-        weekdayRow.innerHTML += `<th>${'月火水木金土日'[d.getDay() === 0 ? 6 : d.getDay() - 1]}</th>`;
+        weekdayRow.innerHTML += `<th>${'月火水木金土日'[d.getDay() === 0 ? 6 : d.getDay() - 1]}</th>`;//もし日曜(0)なら(6)ヘ
         taskRow.innerHTML += `
             <td>
                 <ul>${(tasks[key] || []).map((t, i) => `
@@ -79,10 +79,10 @@ function addTask(key){
     (tasks[key] ??= []).push({ text: text, done: false });//tasks[key]に値が入っていなければ[]を代入
     localStorage.setItem("tasks", JSON.stringify(tasks));
     saveTasks();
-    render();
+    render();//内容が変更されるたびにrender()で更新
 };
 
-//☆チェックのON/OFFを切り替える
+//チェックのON/OFFを切り替える
 function toggleTask(key, index){
     tasks[key][index].done = !tasks[key][index].done;
     saveTasks();
@@ -98,7 +98,3 @@ document.getElementById("prevButton").onclick = () => slideWeek(-1);
 document.getElementById("nextButton").onclick = () => slideWeek(1);
 
 render();
-
-
-
-//☆render以降の関数にrenderが連打しているのはなぜんだー？
