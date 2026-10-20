@@ -74,7 +74,7 @@ function render(){
             const text = prompt('予定を入力してください', cell.textContent);
             if (text !== null) { // キャンセル時は null が返る
                 if (text === "") {
-                    delete schedule[k];          // 空なら削除
+                    delete schedule[k]; // 空なら削除
                 } else {
                     schedule[k] = text;
                 }
