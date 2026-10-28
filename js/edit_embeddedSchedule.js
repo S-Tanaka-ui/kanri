@@ -8,6 +8,7 @@ button.addEventListener("click", function(){
 document.getElementById("add-schedule").addEventListener("click", function(){
     const list = document.getElementById("schedule-list");
     const firstItem = list.querySelector(".schedule-item");
+    //↓+ボタンを作成
     const newItem = firstItem.cloneNode(true);//cloneNodeは要素をコピーするメソッド、trueだと親・子要素すべて
 
     //ついでに削除ボタンも追加
@@ -29,7 +30,6 @@ document.getElementById("schedule-list").addEventListener("click", function(e){/
 
 
 
-//登録ボタンを押すと題名が生活要素に追加される
 const touroku = document.getElementById("tourokuButton");
 const daimeiInput = document.querySelector(".daimeiContent");
 const gaiyouInput = document.querySelector(".gaiyouContent");
@@ -70,6 +70,7 @@ if (editIndex !== null) {
     });
 }
 
+//登録ボタンを押してlocalStorageに保存
 touroku.addEventListener("click", function(){
     if (!daimeiInput.value) return;//タイトルが空なら中断
     //schedulesとしてまとめる→newItemへ

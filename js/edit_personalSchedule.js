@@ -4,7 +4,7 @@ button.addEventListener("click", function(){
     window.location.href = "index.html"
 })
 
-//登録ボタンを押すと題名が生活要素に追加される
+
 const touroku = document.getElementById("tourokuButton");
 const daimeiInput = document.querySelector(".daimeiContent");
 const gaiyouInput = document.querySelector(".gaiyouContent");
@@ -25,6 +25,7 @@ if (editIndex !== null) {
     memoInput.value = item.memo;
 }
 
+//登録ボタンを押してlocalStorageに保存
 touroku.addEventListener("click", function(){
     if (!daimeiInput.value) return;//タイトルが空なら中断
 
