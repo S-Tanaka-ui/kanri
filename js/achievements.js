@@ -1,4 +1,4 @@
-//localStorageから期間内のデータを読み、テキストにして中継関数(worker.js)に送る
+//localStorageから期間内のデータを取得、テキストにして中継関数(worker.js)に送る
 
 //☆デプロイした中継関数(Cloudflare Worker)のURLに書き換える
 const WORKER_URL = "https://kanri-ai.あなたのサブドメイン.workers.dev";
@@ -38,7 +38,7 @@ function setThisMonth(){
     const today = new Date();
     setRange(new Date(today.getFullYear(), today.getMonth(), 1), today);
 }
-document.getElementById("thisWeekButton").onclick = setThisWeek;
+document.getElementById("thisWeekButton").onclick = setThisWeek;//? 関数名をただの変数みたいな書き方していいの？
 document.getElementById("lastWeekButton").onclick = setLastWeek;
 document.getElementById("thisMonthButton").onclick = setThisMonth;
 setThisWeek();//初期値は今週
@@ -69,7 +69,8 @@ function collectRecords(from, to){
     return { doneLines, scheduleLines };
 }
 
-async function summarize(){
+async function summarize(){//async : 非同期処理 
+    //HTMLから期間を取得
     const from = document.getElementById("from").value;
     const to = document.getElementById("to").value;
     const status = document.getElementById("status");
@@ -77,44 +78,46 @@ async function summarize(){
     const button = document.getElementById("summarizeButton");
 
     result.textContent = "";
-
+    //入力された期間をチェック
     if(!from || !to || from > to){
         status.textContent = "期間を正しく指定してください。"
         return;
     }
-
+    //記録を取得
     const {doneLines, scheduleLines} = collectRecords(from, to);
-
+    //記録がなかったら終了
     if(doneLines.length === 0 && scheduleLines.length === 0){
         status.textContent = "この期間には記録がありません。";
         return;
     }
 
-    button.disabled = true;
+    button.disabled = true;//処理中はボタンを無効化
     status.textContent = "まとめています...";
 
+    //ブラウザからworkersにデータを送信
     try{
         const res = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
+            //↓通信に関する設定
+            method: "POST",//通信の方法(データを送信)
+            headers: {"Content-Type": "application/json"},//データの形式
+            body: JSON.stringify({//送信するデータ
                 from,
                 to,
-                done: doneLines.join("\n"),
+                done: doneLines.join("\n"),//? ここらへんの細かい記述
                 schedule: scheduleLines.join("\n")
             })
         });
-        const data = await res.json();
+        const data = await res.json();//通信結果を表す変数
+        //通信が成功したか確認
         if(!res.ok) throw new Error(data.error || `エラー(${res.status})`);
-
+        //AIの回答を画面に表示
         result.textContent = data.text;
-
         status.textContent = "";
-    } catch(e){
+    } catch(e){//エラーが発生した場合(eはエラー情報)
         status.textContent = "うまくいきませんでした:" + e.message;
     } finally{
         button.disabled = false;
     }
 }
-
+//ボタンをクリックしてsummarize関数を実行
 document.getElementById("summarizeButton").onclick = summarize;
