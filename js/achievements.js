@@ -38,7 +38,7 @@ function setThisMonth(){
     const today = new Date();
     setRange(new Date(today.getFullYear(), today.getMonth(), 1), today);
 }
-document.getElementById("thisWeekButton").onclick = setThisWeek;//? 関数名をただの変数みたいな書き方していいの？
+document.getElementById("thisWeekButton").onclick = setThisWeek;
 document.getElementById("lastWeekButton").onclick = setLastWeek;
 document.getElementById("thisMonthButton").onclick = setThisMonth;
 setThisWeek();//初期値は今週
@@ -54,7 +54,7 @@ function collectRecords(from, to){
     Object.keys(tasks).sort().forEach(date => {//日付のキーを取り出して日付順に並び替え
         if(!inRange(date)) return;//期間外なら処理しない
         tasks[date].forEach(t => {
-            if(t && t.done) doneLines.push(`${date}: ${t.text}`);//完了しているtodoリストをpush ? t.textのtextはなんぞや
+            if(t && t.done) doneLines.push(`${date}: ${t.text}`);//完了しているtodoリストをpush
         });
     });
 
@@ -63,7 +63,7 @@ function collectRecords(from, to){
         const date = key.slice(0, 10);//日付(2026-10-10)
         const slot = key.slice(11);//時間帯(AM/PM/NT)
         if(!inRange(date)) return;
-        if(schedule[key]) scheduleLines.push(`${date} ${slot}: ${schedule[key]}`);//? schedule[key]ってなんぞや
+        if(schedule[key]) scheduleLines.push(`${date} ${slot}: ${schedule[key]}`);
     });
 
     return { doneLines, scheduleLines };
@@ -100,10 +100,10 @@ async function summarize(){//async : 非同期処理
             //↓通信に関する設定
             method: "POST",//通信の方法(データを送信)
             headers: {"Content-Type": "application/json"},//データの形式
-            body: JSON.stringify({//送信するデータ
-                from,
-                to,
-                done: doneLines.join("\n"),//? ここらへんの細かい記述
+            body: JSON.stringify({//送信するデータ(JSON形式に変換)
+                from: from,
+                to: to,
+                done: doneLines.join("\n"),
                 schedule: scheduleLines.join("\n")
             })
         });
