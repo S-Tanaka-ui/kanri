@@ -35,9 +35,9 @@ export default{
         }
 
         let body;
-        try{
+        try{//通常の処理を実行
             body = await request.json();
-        }catch{
+        }catch{//エラーが発生した場合の処理
             return json({ error: "データの形式が正しくありません" }, 400);
         }
 
@@ -46,6 +46,53 @@ export default{
         const done = String(body.done || "");
         const schedule = String(body.schedule || "");
 
+        if(done.length + schedule.length > MAX_CHARS){
+            return json({ error: "記録が多すぎます。期間を短くしてください。"}, 413);
+        }
+
+        const systemPrompt = 
+            "大学生の生活記録を振り返ってください。" +
+            "与えられた『完了したToDo』と『予定』を基に、この期間に達成したことを日本語でまとめてください。" +
+            "記録にないことは書かないでください。" +
+            "3~7個の箇条書きにして、最後に1~2文の短い振り返りコメントを添えてください。"
+        ;
+        const userText = 
+            `期間: ${from} ~ ${to}\n\n` +
+            `【完了したToDo】\n${done || "(なし)"}\n\n` +
+            `【予定】\n${schedule || "(なし)"}`
+        ;
+
+        const model = env.GEMINI_MODEL || DEFAULT_MODEL;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+        //API通信
+        let res;
+        try{
+            res = await this.fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-goog-api-key": env.GEMINI_API_KEY,
+                },
+                body: JSON.stringify({
+                    systemInstruction: {parts: [{text: systemPrompt}]},
+                    contents: [{role: "user", parts:[{text: userText}]}]
+                }),
+            });
+        }catch{
+            return json({ error: "AIサービスに接続できませんでした"}, 502);
+        }
         
+        if(!res.ok){
+            console.log("Gemini error", res.status, await res.text());
+            return json({error: `AIサービスがエラーを返しました(${res.status})`}, 502);
+        }
+
+        const data = await res.json();
+        const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
+        if(!text) return json({error: "AIから結果を受け取れませんでした"}, 502);
+
+        return json({text: text});
+
     }
-}
+};
