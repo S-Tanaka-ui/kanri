@@ -3,19 +3,19 @@ const DEFAULT_MODEL = "gemini-2.5-flash";
 const MAX_CHARS = 8000;
 
 //アクセス設定
-function corsHeaders(){
+function corsHeaders(){//cross-origin resource sharing
     return{
         "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",//許可するHTTPメソッド(POST:送信,OPTIONS:通信の事前確認)
+        "Access-Control-Allow-Headers": "Content-Type",//許可するHTTPヘッダー、18,73行目での指定
     };
 }
 
 //JSON形式で返す関数
 function json(obj, status = 200){//HTTPステータスコード(指定しなければ200)
-    return new Response(JSON,stringify(obj), {
+    return new Response(JSON,stringify(obj), {//ブラウザに回答を返すためのレスポンスクラス(newで新しいオブジェクトを生成)
         status,
-        headers: {"Content-Tupe": "application/json", ...corsHeaders() },
+        headers: {"Content-Type": "application/json", ...corsHeaders() },
     });
 }
 
