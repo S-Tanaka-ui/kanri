@@ -19,17 +19,16 @@ function json(obj, status = 200){//HTTPステータスコード(指定しなけ�
     });
 }
 
-//★★
 export default{
-    async fetch(request, env){
+    async fetch(request, env){//非同期、リクエストを扱った処理
+        //アクセス条件の確認
         if(request.method === "OPTIONS"){
             return new Response(null, { status: 204, headers: corsHeaders() });
         }
         if(request.method !== "POST"){
             return json({ error: "POSTで呼び出してください"}, 405);
         }
-
-        const Origin = request.headers.get("Origin");
+        const origin = request.headers.get("Origin");
         if(origin !== ALLOWED_ORIGIN){
             return json({ error: "許可されていないアクセス元です" }, 403);
         }
