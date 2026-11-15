@@ -34,7 +34,7 @@ export default{
         }
 
         let body;
-        try{//通常の処理を実行
+        try{//achievements.jsで送ったJSONデータをbodyに格納
             body = await request.json();
         }catch{//エラーが発生した場合の処理
             return json({ error: "データの形式が正しくありません" }, 400);
@@ -44,17 +44,18 @@ export default{
         const to = String(body.to || "").slice(0, 10);
         const done = String(body.done || "");
         const schedule = String(body.schedule || "");
-
+        //文字数の上限に達していないかチェック
         if(done.length + schedule.length > MAX_CHARS){
             return json({ error: "記録が多すぎます。期間を短くしてください。"}, 413);
         }
-
+        //Geminiへの指示文
         const systemPrompt = 
             "大学生の生活記録を振り返ってください。" +
             "与えられた『完了したToDo』と『予定』を基に、この期間に達成したことを日本語でまとめてください。" +
-            "記録にないことは書かないでください。" +
-            "3~7個の箇条書きにして、最後に1~2文の短い振り返りコメントを添えてください。"
+            "文章の構成は、まず「こんにちは!〇〇さん!」から始まり、「あなたは〇〇(期間)で、△△を達成しました!」と述べてください。" +
+            "その後で、具体的な達成リストを箇条書きで示してください。"
         ;
+        //ユーザーの達成情報
         const userText = 
             `期間: ${from} ~ ${to}\n\n` +
             `【完了したToDo】\n${done || "(なし)"}\n\n` +
@@ -65,9 +66,9 @@ export default{
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
         //API通信
-        let res;
+        let res;//レスポンスを格納するための変数
         try{
-            res = await this.fetch(url, {
+            res = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -81,7 +82,7 @@ export default{
         }catch{
             return json({ error: "AIサービスに接続できませんでした"}, 502);
         }
-        
+        //Gemini側からのエラーがないか確認
         if(!res.ok){
             console.log("Gemini error", res.status, await res.text());
             return json({error: `AIサービスがエラーを返しました(${res.status})`}, 502);
@@ -90,7 +91,7 @@ export default{
         const data = await res.json();
         const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
         if(!text) return json({error: "AIから結果を受け取れませんでした"}, 502);
-
+        //回答の表示
         return json({text: text});
 
     }
