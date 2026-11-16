@@ -13,7 +13,7 @@ function corsHeaders(){//cross-origin resource sharing
 
 //JSON形式で返す関数
 function json(obj, status = 200){//HTTPステータスコード(指定しなければ200)
-    return new Response(JSON,stringify(obj), {//ブラウザに回答を返すためのレスポンスクラス(newで新しいオブジェクトを生成)
+    return new Response(JSON.stringify(obj), {//ブラウザに回答を返すためのレスポンスクラス(newで新しいオブジェクトを生成)
         status,
         headers: {"Content-Type": "application/json", ...corsHeaders() },
     });
