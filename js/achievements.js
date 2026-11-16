@@ -1,7 +1,7 @@
 //localStorageから期間内のデータを取得、テキストにして中継関数(worker.js)に送る
 
 //☆デプロイした中継関数(Cloudflare Worker)のURLに書き換える
-const WORKER_URL = "https://kanri-ai.あなたのサブドメイン.workers.dev";
+const WORKER_URL = "https://kanri-ai.sona252anos.workers.dev";
 
 //localStorageからデータを取得(データが無ければ空)
 const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
